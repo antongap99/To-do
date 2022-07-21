@@ -5,6 +5,17 @@
     max-height: 600px;
 }
 
+body {
+    background-color: #c4f0d8;
+}
+thead {
+    background-color: #83a9db;
+}
+tbody {
+    background-color: #cce2b5;
+}
+
+
 .modal-title{
     font-size: 1.5rem;
     text-align: center;
