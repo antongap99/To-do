@@ -88,13 +88,14 @@ const idGenerate = () => {
   return id;
 }
 
-const addNewTask = (taskInputValue, status, id , key) => {
+const addNewTask = (taskInputValue, status, id ,  key) => {
     const list = document.querySelectorAll('tr');
-    const numberItem = +list[list.length - 1].firstElementChild.textContent || 1;
+    let numberItem = +list[list.length - 1].firstElementChild.textContent || 0;
+    console.log('numberItem: ', numberItem);
     const tablelightLine = document.createElement('tr');
 
     tablelightLine.insertAdjacentHTML( 'beforeend', `<tr >
-    <td>${numberItem + 1}</td>
+    <td>${++numberItem}</td>
     <td class="task">
       ${taskInputValue}
     </td>
@@ -206,8 +207,19 @@ const dltControl = () => {
     }
     console.log(e.target.dataset.id)
     removeStorage(key, e.target.dataset.id);
+    NumberingControl(tBody)
   })
 }
+
+const NumberingControl = (tBody) => {
+  const numbering = tBody.children;
+  console.log('numbering: ', numbering);
+  for (let i = 1; i <= tBody.children.length; i++ ){
+      numbering[i - 1].firstElementChild.textContent = i;
+      console.log(numbering[i - 1].firstElementChild.textContent);
+  }
+}
+
 
 const successControl = () => {
   tBody.addEventListener('click', (e) => {
