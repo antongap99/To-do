@@ -36,11 +36,7 @@ const createModal = () => {
   const modalBtn = document.createElement('button');
   modalBtn.type = 'submit';
   modalBtn.className = 'modal__btn';
-  modalBtn.style.backgroundColor = '#499ab8';
-  modalBtn.style.color = 'white';
-  modalBtn.style.fontSize = '18px';
-  modalBtn.style.border = 'none';
-  modalBtn.style.borderRadius = '3px';
+  
   modalBtn.name = 'submit';
   modalBtn.textContent = 'Подтвердить';
 
