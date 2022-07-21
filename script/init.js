@@ -3,7 +3,7 @@ const {setStorage, removeStorage, getStorage,} = storage;
 
 const tBody = document.querySelector('tBody');
 const form = document.querySelector('form');
-
+const tasks = [];
 
 const createNameTag = (user) => {
         const userName = user;
@@ -64,6 +64,12 @@ const createModal = () => {
   }
 
 
+  const getRandomIntInclusive = (min, max) =>  {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  };
+
 const renderApp = (selectorApp) => {
     const appContainer = document.querySelector(selectorApp);
     const {modalForm, overlay,} = createModal();
@@ -77,18 +83,24 @@ const renderApp = (selectorApp) => {
     }
 }
 
-const addNewTask = (taskInputValue, status, key) => {
+const idGenerate = () => {
+  const id = getRandomIntInclusive(1, 30);
+  return id;
+}
+
+const addNewTask = (taskInputValue, status, id , key) => {
     const list = document.querySelectorAll('tr');
     const numberItem = +list[list.length - 1].firstElementChild.textContent || 1;
     const tablelightLine = document.createElement('tr');
-    tablelightLine.insertAdjacentHTML( 'beforeend', `<tr>
+
+    tablelightLine.insertAdjacentHTML( 'beforeend', `<tr >
     <td>${numberItem + 1}</td>
     <td class="task">
       ${taskInputValue}
     </td>
     <td>${status}</td>
     <td>
-      <button class="btn btn-danger">
+      <button class="btn btn-danger" data-id = "${id}">
         Удалить
       </button>
       <button class="btn btn-success">
@@ -101,15 +113,15 @@ const addNewTask = (taskInputValue, status, key) => {
 
     return {
       taskInputValue,
-      status
+      status,
+      id,
     }
 }
 
 const renderUserTasks = (key) => {
   const data = getStorage(key);
-  const userName = localStorage.getItem('user');
   data.forEach((elem) => {
-   addNewTask( elem.taskInputValue, elem.status, key,);
+  addNewTask( elem.taskInputValue, elem.status, elem.id, key,);
   })
 }
 
@@ -146,6 +158,7 @@ const modalControl  = (modalForm, overlay, form) => {
 
 
 const taskControl = () => {
+
   const taskInput = form.querySelector('.form-control');
   const btnSave = form.querySelector('.btn-primary');
   btnSave.setAttribute('disabled', '');
@@ -163,8 +176,8 @@ const taskControl = () => {
     e.preventDefault();
     console.log(e.target.classList);
     if(taskInput.value ) {
-      const {taskInputValue, status} = addNewTask( taskInput.value, 'В процессе', key);
-      setStorage(key, {taskInputValue, status});
+      const {taskInputValue, status, id} = addNewTask( taskInput.value, 'В процессе', idGenerate(),  key);
+      setStorage(key, {taskInputValue, status, id,});
       btnSave.setAttribute('disabled', '');
       form.reset();
     };
@@ -179,9 +192,11 @@ const taskControl = () => {
 };
 
 const dltControl = () => {
+
   const deleteBtn = document.querySelector('.btn-danger');
   tBody.addEventListener('click', (e) => {
-
+    const key = localStorage.getItem('user');
+    console.log('key: ', key);
     if(e.target.closest('.btn-danger') && confirm('хотите удалить задачу?')){
       try{
         e.target.closest('.table-light').remove();
@@ -189,6 +204,8 @@ const dltControl = () => {
         e.target.closest('.table-success').remove();
       }
     }
+    console.log(e.target.dataset.id)
+    removeStorage(key, e.target.dataset.id);
   })
 }
 
@@ -214,13 +231,15 @@ const successControl = () => {
 
 
 
+
+
 const  init = () => {
     const {
       modalForm,
       overlay,
     } = renderApp('.app-container.vh-100');
 
-    const key = modalControl(modalForm, overlay, form);
+    modalControl(modalForm, overlay, form);
     dltControl();
     taskControl();
     successControl();

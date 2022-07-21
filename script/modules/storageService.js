@@ -18,13 +18,13 @@ const getStorage = (key) => {
     window.localStorage.setItem(key, JSON.stringify(data));
   };
 
-  const removeStorage = (phoneNumber) => {
-    const data = getStorage('data');
+  const removeStorage = (key, id) => {
+    const data = getStorage(key);
 
-    const newData = data.filter((elem) => phoneNumber !== elem.phone);
+    const newData = data.filter((elem) => +id !== +elem.id);
 
-    window.localStorage.removeItem('data');
-    window.localStorage.setItem('data', JSON.stringify(newData));
+    window.localStorage.removeItem(key);
+    window.localStorage.setItem(key, JSON.stringify(newData));
   };
 
   export default {
