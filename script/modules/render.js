@@ -1,11 +1,10 @@
 
 import storage from './storageService.js';
-const {setStorage, removeStorage, getStorage,} = storage;
+const { getStorage,} = storage;
 
 import create from './create.js';
 const {createModal, addNewTask,} = create;
-import calc from './calc.js';
-const { getRandomIntInclusive, idGenerate,} = calc;
+
 
 
 

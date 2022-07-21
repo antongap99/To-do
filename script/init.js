@@ -1,20 +1,14 @@
-import storage from './modules/storageService.js';
-const {setStorage, removeStorage, getStorage,} = storage;
+
 import control from './modules/control.js';
-const {modalControl,
+const {
+  modalControl,
   taskControl,
   dltControl,
-  NumberingControl,
-  successControl,} = control;
+  successControl,
+} = control;
 
 import render from './modules/render.js';
-const {renderApp, renderUserTasks, } = render;
-
-import create from './modules/create.js';
-const {createModal, addNewTask,} = create;
-import calc from './modules/calc.js';
-const { getRandomIntInclusive, idGenerate,} = calc;
-
+const {renderApp,} = render;
 
 
 
@@ -31,18 +25,14 @@ const  init = () => {
     dltControl(tBody);
     taskControl(form, tBody);
     successControl(tBody);
+
 };
-
-
-
-
-
-
-
 
 
 
 document.addEventListener('DOMContentLoaded', (e) => {
     e.preventDefault();
     init();
+
 });
+

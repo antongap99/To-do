@@ -1,10 +1,3 @@
-import storage from './storageService.js';
-const {setStorage, removeStorage, getStorage,} = storage;
-
-
-
-import calc from './calc.js';
-const { getRandomIntInclusive, idGenerate,} = calc;
 
 const createNameTag = (user) => {
     const userName = user;
@@ -71,12 +64,12 @@ const addNewTask = (taskInputValue, status, id , tBody) => {
 
     tablelightLine.insertAdjacentHTML( 'beforeend', `<tr >
     <td>${++numberItem}</td>
-    <td class="task">
-      ${taskInputValue}
+    <td class="task"  contenteditable="true">
+      <p>${taskInputValue}</p>
     </td>
     <td>${status}</td>
     <td>
-      <button class="btn btn-danger" data-id = "${id}">
+      <button class="btn btn-danger" data-id = "${id}" >
         Удалить
       </button>
       <button class="btn btn-success">
@@ -84,7 +77,7 @@ const addNewTask = (taskInputValue, status, id , tBody) => {
       </button>
     </td>
   </tr>`)
-  tablelightLine.className = 'table-light';
+  tablelightLine.classList = 'table-row table-light';
     tBody.append(tablelightLine);
 
     return {

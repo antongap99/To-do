@@ -1,13 +1,13 @@
 import storage from './storageService.js';
-const {setStorage, removeStorage, getStorage,} = storage;
+const {setStorage, removeStorage,} = storage;
 
 import render from './render.js';
-const {renderApp, renderUserTasks, } = render;
+const {renderUserTasks, } = render;
 
 import create from './create.js';
-const {createModal, addNewTask, createNameTag,} = create;
+const {addNewTask, createNameTag,} = create;
 import calc from './calc.js';
-const { getRandomIntInclusive, idGenerate,} = calc;
+const { idGenerate,} = calc;
 
 const modalControl  = (modalForm, overlay, form, tBody) => {
 
@@ -34,6 +34,29 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
 
       localStorage.setItem('user', userName);
       renderUserTasks(userName, tBody);
+
+      const editTaskSaveBtn = document.createElement('button');
+      editTaskSaveBtn.className = 'btn btn-primary me-3 edit';
+      editTaskSaveBtn.textContent = 'сохранить';
+
+
+
+    //   tBody.addEventListener('focus', (e) => {
+    //     if(e.target.matches('task')){
+    //         document.querySelector('.table-light').lastElementChild.append(editTaskSaveBtn);
+    //     }
+    //   })
+
+    //   editTaskSaveBtn.addEventListener('click', (e) => {
+    //     taskEditElem.textContent
+
+    //     console.log(taskEditElem.textContent)
+    //     editTaskSaveBtn.remove();
+    //   })
+
+
+
+
     } );
 
   }
@@ -43,7 +66,7 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
     const taskInput = form.querySelector('.form-control');
     const btnSave = form.querySelector('.btn-primary');
     btnSave.setAttribute('disabled', '');
-    form.addEventListener('change', (e) => {
+    form.addEventListener('input', (e) => {
       if(taskInput.value) {
         btnSave.removeAttribute('disabled');
       } else {
@@ -69,14 +92,15 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
       btnSave.setAttribute('disabled', '');
     })
 
+
+
   };
 
   const dltControl = (tBody) => {
-
-    const deleteBtn = document.querySelector('.btn-danger');
     tBody.addEventListener('click', (e) => {
       const key = localStorage.getItem('user');
 
+      removeStorage(key, e.target.dataset.id);
       if(e.target.closest('.btn-danger') && confirm('хотите удалить задачу?')){
         try{
           e.target.closest('.table-light').remove();
@@ -84,7 +108,6 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
           e.target.closest('.table-success').remove();
         }
       }
-      removeStorage(key, e.target.dataset.id);
       NumberingControl(tBody)
     })
   }
@@ -102,12 +125,12 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
       if(e.target.closest('.btn-success')){
         try{
           const tr = e.target.closest('.table-light');
-          tr.className ='table-success';
+          tr.className ='table-row table-success';
           tr.children[1].className = 'text-decoration-line-through';
           tr.children[2].textContent = 'Выполнена';
         } catch{
           const tr = e.target.closest('.table-success');
-          tr.className ='table-light';
+          tr.className ='table-row table-light';
           tr.children[1].className = 'task';
           tr.children[2].textContent = 'В процессе';
         }
@@ -116,6 +139,8 @@ const modalControl  = (modalForm, overlay, form, tBody) => {
       }
     });
   }
+
+
 
 
   export default {
