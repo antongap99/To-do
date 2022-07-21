@@ -1,3 +1,4 @@
+
 const getStorage = (key) => {
     let result;
      try {
